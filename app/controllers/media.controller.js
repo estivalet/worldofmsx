@@ -2,20 +2,20 @@ const models = require('../models/schema.model.js');
 
 exports.index = (req, res) => {
     console.log("INDEX");
-    res.render('country/index', { title: "country page" });
+    res.render('media/index', { title: "media page" });
 }
 
-// Create and Save a new country
+// Create and Save a new media
 exports.create = (req, res) => {
     try {
 
-    // Create a country.
-    const country = new models.Country({
+    // Create a media.
+    const media = new models.Media({
         name: req.body.name
     });
 
-    // Save a country in the database.
-    country.save()
+    // Save a media in the database.
+    media.save()
         .then(data => {
             res.send(data);
         }).catch(err => {
@@ -34,19 +34,19 @@ exports.findAll = (req, res) => {
     var perPage = 10;
     var page = req.query.page;
 
-    // if a number of page is passed as a parameter use it, otherwise list all countrys.
+    // if a number of page is passed as a parameter use it, otherwise list all medias.
     if(page) {
-        models.Country.find({})
+        models.Media.find({})
         .sort({'name': 1})
         .skip((perPage * page) - perPage)
         .limit(perPage)
-        .exec(function(err, countrys) {
-            models.Country.countDocuments().exec(function(err, count) {
+        .exec(function(err, medias) {
+            models.Media.countDocuments().exec(function(err, count) {
                 
                 if(err) return next(err);
                 
                 result = {
-                    countrys: countrys,
+                    medias: medias,
                     current: page,
                     pages: Math.ceil(count / perPage)
                 };
@@ -55,12 +55,12 @@ exports.findAll = (req, res) => {
             })
         });
     } else {
-        models.Country.find()
-        .then(countrys => {
-            res.send(countrys);
+        models.Media.find()
+        .then(medias => {
+            res.send(medias);
         }).catch(err => {
             res.status(500).send({
-                message: err.message || "Some error occurred while retrieving countrys."
+                message: err.message || "Some error occurred while retrieving medias."
             });
         });        
     }
@@ -68,22 +68,22 @@ exports.findAll = (req, res) => {
 
 // Find a single country with a countryId
 exports.findOne = (req, res) => {
-    models.Country.findById(req.params.countryId)
-    .then(country => {
-        if(!country) {
+    models.Media.findById(req.params.mediaId)
+    .then(media => {
+        if(!media) {
             return res.status(404).send({
-                message: "country not found with id " + req.params.countryId
+                message: "media not found with id " + req.params.mediaId
             });            
         }
-        res.send(country);
+        res.send(media);
     }).catch(err => {
         if(err.kind === 'ObjectId') {
             return res.status(404).send({
-                message: "country not found with id " + req.params.countryId
+                message: "media not found with id " + req.params.mediaId
             });                
         }
         return res.status(500).send({
-            message: "Error retrieving country with id " + req.params.countryId
+            message: "Error retrieving media with id " + req.params.mediaId
         });
     });
 };
@@ -91,46 +91,46 @@ exports.findOne = (req, res) => {
 // Update a country identified by the countryId in the request
 exports.update = (req, res) => {
     // Find note and update it with the request body
-    models.Country.findByIdAndUpdate(req.params.countryId, {
+    models.Media.findByIdAndUpdate(req.params.mediaId, {
         name: req.body.name
     }, {new: true})
-    .then(country => {
-        if(!country) {
+    .then(media => {
+        if(!media) {
             return res.status(404).send({
-                message: "country not found with id " + req.params.countryId
+                message: "media not found with id " + req.params.mediaId
             });
         }
-        res.send(country);
+        res.send(media);
     }).catch(err => {
         if(err.kind === 'ObjectId') {
             return res.status(404).send({
-                message: "country not found with id " + req.params.countryId
+                message: "media not found with id " + req.params.mediaId
             });                
         }
         return res.status(500).send({
-            message: "Error updating country with id " + req.params.countryId
+            message: "Error updating media with id " + req.params.mediaId
         });
     });
 };
 
 // Delete a country with the specified countryId in the request
 exports.delete = (req, res) => {
-    models.Country.findByIdAndRemove(req.params.countryId)
-        .then(country => {
-            if(!country) {
+    models.Media.findByIdAndRemove(req.params.mediaId)
+        .then(media => {
+            if(!media) {
                 return res.status(404).send({
-                    message: "country not found with id " + req.params.countryId
+                    message: "media not found with id " + req.params.mediaId
                 });
             }
-            res.send({message: "country deleted successfully!"});
+            res.send({message: "media deleted successfully!"});
         }).catch(err => {
             if(err.kind === 'ObjectId' || err.name === 'NotFound') {
                 return res.status(404).send({
-                    message: "country not found with id " + req.params.countryId
+                    message: "media not found with id " + req.params.mediaId
                 });                
             }
             return res.status(500).send({
-                message: "Could not delete country with id " + req.params.countryId
+                message: "Could not delete media with id " + req.params.mediaId
             });
     });
 };

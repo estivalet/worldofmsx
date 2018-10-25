@@ -2,7 +2,7 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <h1>Genre<small>Control panel</small></h1>
+        <h1>media<small>Control panel</small></h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="active">Dashboard</li>
@@ -18,15 +18,15 @@
 
                 <div class="box box-primary">
                 
-                    <div class="box-header with-border"><h3 class="box-title">New Genre</h3></div>
+                    <div class="box-header with-border"><h3 class="box-title">New media</h3></div>
                 
-                    <form role="form" id="genre">
+                    <form role="form" id="media">
                 
                         <div class="box-body">
                             <div class="form-group">
                                 <label for="name">Name</label>
                                 <input type="hidden" id="id">
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter genre name">
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter media name">
                             </div>
 
                             <div class="table-responsive">
@@ -34,12 +34,12 @@
                                     <caption></caption>
                                     <thead class="thead-light">
                                         <tr>
-                                            <th>Genre</th>
+                                            <th>media</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     
-                                    <tbody id="genres">
+                                    <tbody id="medias">
                                     </tbody>
                                 </table>
                             </div> 
@@ -64,9 +64,9 @@
 </div>
 
 <script>
-function save_genre() {    
+function save_media() {    
     $.ajax({
-        url: $("#id").val() ? '/genre/' + $("#id").val() : '/genre',
+        url: $("#id").val() ? '/media/' + $("#id").val() : '/media',
         dataType: 'json',
         type: $("#id").val() ? 'put' : 'post',
         contentType: 'application/x-www-form-urlencoded',
@@ -75,8 +75,8 @@ function save_genre() {
             "name": $("#name").val(),
         },
         success: function( data, textStatus, jQxhr ) {
-            $("#genre")[0].reset();
-            changePage("genre", 1);
+            $("#media")[0].reset();
+            changePage("media", 1);
         },
         error: function( jqXhr, textStatus, errorThrown ){
             console.log( errorThrown );
@@ -85,27 +85,27 @@ function save_genre() {
 }
 
 $("#submit").click(function() {
-    save_genre();
+    save_media();
 });
 
 document.onkeydown=function(){
     if(window.event.keyCode == '13'){
         event.preventDefault();
-        save_genre();
+        save_media();
     }
 }
 
-function edit_genre(id) {
+function edit_media(id) {
     console.log(id);
     $.ajax({
-        url: '/genre/' + id,
+        url: '/media/' + id,
         dataType: 'json',
         type: 'get',
-        success: function( genre, textStatus, jQxhr ) {
+        success: function( media, textStatus, jQxhr ) {
             console.log('-->update ');
-            console.log(genre);
-            $('#id').val(genre.id);
-            $('#name').val(genre.name);
+            console.log(media);
+            $('#id').val(media.id);
+            $('#name').val(media.name);
             $('#name').focus();
         },
         error: function( jqXhr, textStatus, errorThrown ){
@@ -114,14 +114,14 @@ function edit_genre(id) {
     });
 }
 
-function delete_genre(id) {
+function delete_media(id) {
     console.log(id);
     $.ajax({
-      url : "/genre/" + id,
+      url : "/media/" + id,
       type : "delete",
       success : function(data) {
           console.log(data);
-          changePage("genre", 1);
+          changePage("media", 1);
       }
     });
 }
@@ -140,7 +140,7 @@ function changePage(target, page) {
           var tableBody = document.getElementById(target + "s");
           tableBody.innerHTML = "";
 
-          $.each(data.genres, function(index, element) {
+          $.each(data.medias, function(index, element) {
             
             // Create a row.
             var tr = document.createElement('TR');
@@ -225,6 +225,6 @@ function changePage(target, page) {
 
 
 $( document ).ready(function() {
-    changePage("genre", 1);
+    changePage("media", 1);
 });
 </script>

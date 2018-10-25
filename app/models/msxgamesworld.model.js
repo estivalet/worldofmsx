@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var GameSchema = new Schema(
+var MSXGamesWorldSchema = new Schema(
   {
     _id: Schema.Types.ObjectId,
     name: {type: String},
@@ -16,4 +16,4 @@ var GameSchema = new Schema(
 
 
 //Export model
-module.exports = mongoose.model('Game', GameSchema);
+module.exports = mongoose.model('MSXGamesWorld', MSXGamesWorldSchema, 'msxgamesworld');

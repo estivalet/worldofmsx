@@ -1,12 +1,14 @@
 module.exports = (app) => {
     const country = require('../controllers/country.controller.js');
 
+    // Index page
+    app.get('/country/index', country.index);
+
     // Create a new country
     app.post('/country', country.create);
 
-    // Retrieve all countries
+    // Retrieve all countrys
     app.get('/country', country.findAll);
-    app.get('/country/index', country.index);
 
     // Retrieve a single country with countryId
     app.get('/country/:countryId', country.findOne);

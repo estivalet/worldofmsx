@@ -53,17 +53,19 @@ exports.findAll = (req, res) => {
 
     // if a number of page is passed as a parameter use it, otherwise list all genres.
     if(page) {
-        models.Genre.find({})
+        console.log('pgaed!!!!!' + page);
+        models.Company.find({})
+        .collation({locale: "en" }) 
         .sort({'name': 1})
         .skip((perPage * page) - perPage)
         .limit(perPage)
         .exec(function(err, genres) {
-            models.Genre.countDocuments().exec(function(err, count) {
+            models.Company.countDocuments().exec(function(err, count) {
                 
                 if(err) return next(err);
                 
                 result = {
-                    genres: genres,
+                    companys: genres,
                     current: page,
                     pages: Math.ceil(count / perPage)
                 };
@@ -72,15 +74,71 @@ exports.findAll = (req, res) => {
             })
         });
     } else {
-        models.Genre.find()
-        .then(genres => {
-            res.send(genres);
+        models.Company.find()
+        .then(companys => {
+            res.send(companys);
         }).catch(err => {
             res.status(500).send({
                 message: err.message || "Some error occurred while retrieving genres."
             });
         });        
     }
+};
+
+exports.findAll2 = (req, res) => {
+    try {
+    var perPage = parseInt(req.query.length);
+    var page = parseInt(req.query.draw);
+
+    console.log("-------->" + perPage);
+    console.log("-------->" + page);
+
+    // if a number of page is passed as a parameter use it, otherwise list all genres.
+    if(page) {
+        models.Company.find({})
+        .collation({locale: "en" }) 
+        .sort({'name': 1})
+        .skip((perPage * page) - perPage)
+        .limit(perPage)
+        .exec(function(err, companys) {
+            console.log("-->" + companys);
+            var lines=[];
+            companys.forEach(function(element) {
+                console.log(element.name);
+                var line=[];
+                line.push(element.name);
+                lines.push(line);
+            });
+            console.log("names->" + lines);
+            models.Company.countDocuments().exec(function(err, count) {
+                if(err) return next(err);
+                
+                result = {
+                    draw: "1",
+                    recordsFiltered: count,
+                    recordsTotal: count,
+                    data: 
+                        lines
+                    
+                };
+                console.log("SENDING RESULT-->" + result);
+                console.log(result.data);
+                res.send(result);
+            })
+        });
+    } else {
+        models.Company.find()
+        .then(companys => {
+            res.send(companys);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving genres."
+            });
+        });        
+    }
+} catch(err) {
+    console.log(err);
+}
 };
 
 // Find a single country with a countryId

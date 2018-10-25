@@ -36,10 +36,13 @@ app.use(express.static(path.join(__dirname, '/public')));
 //app.use('/', msx);
 
 require('./app/routes/msx.routes.js')(app);
-require('./app/routes/game.routes.js')(app);
+
+require('./app/routes/msxgamesworld.routes.js')(app);
 require('./app/routes/company.routes.js')(app);
 require('./app/routes/country.routes.js')(app);
 require('./app/routes/genre.routes.js')(app);
+require('./app/routes/license.routes.js')(app);
+require('./app/routes/media.routes.js')(app);
 require('./app/routes/software.routes.js')(app);
 
 AuthorizationRouter.routesConfig(app);

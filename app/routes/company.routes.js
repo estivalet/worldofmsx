@@ -9,6 +9,7 @@ module.exports = (app) => {
 
     // Retrieve all companys
     app.get('/company', company.findAll);
+    app.get('/company2', company.findAll2);
 
     // Retrieve a single company with companyId
     app.get('/company/:companyId', company.findOne);
