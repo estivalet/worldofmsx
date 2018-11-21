@@ -71,7 +71,9 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     models.Software
     .find()
-    .populate('country')
+    .populate('developer','name')
+    .populate('genre','name')
+    .populate('releases.publisher','name')
     .then(softwares => {
         res.send(softwares);
     }).catch(err => {

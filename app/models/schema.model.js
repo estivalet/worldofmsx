@@ -73,17 +73,16 @@ var mediaSchema = new Schema(
   }
 );
 
-var softwareReleaseSchema = new Schema(
+var publicationSchema = new Schema(
   {
-    title: {type: String},
-    productCode: {type: String},
-    pirated: {type: String},
-    publisher:{ type: Schema.Types.ObjectId, ref: 'Company' },
-    country:{ type: Schema.Types.ObjectId, ref: 'Country' },
-    price: {type: String},
-    media: {type: String},
-    year: {type: String},
-    ean13: {type: String},
+    title: {type: String, unique: true},
+    publisher: {type: String, unique: true},
+    category: {type: String, unique: true},
+  },
+  {
+    timestamps: true,
+    toObject: { virtuals: true },
+    toJSON: { virtuals: true }
   }
 );
 
@@ -94,9 +93,35 @@ var softwareSchema = new Schema(
     type: {type: String},
     year: {type: String},
     description: {type: String},
+    system: {type: String},
     publisher: { type: Schema.Types.ObjectId, ref: 'Company' },
     developer: { type: Schema.Types.ObjectId, ref: 'Company' },
-    releases: [{ type: Schema.Types.ObjectId, ref: 'SoftwareRelease' }]
+    releases: [
+      {
+        name: {type: String},
+        title: {type: String},
+        productCode: {type: String},
+        pirated: {type: String},
+        publisher:{ type: Schema.Types.ObjectId, ref: 'Company' },
+        country:{ type: Schema.Types.ObjectId, ref: 'Country' },
+        price: {type: String},
+        media: {type: String},
+        year: {type: String},
+        ean13: {type: String},
+      }
+    ],
+    medias: [
+      {
+        url: {type: String},
+        type: {type: String},
+        title: {type: String},
+      }
+    ],
+    mentions: [{
+      url: {type: String},
+      text: {type: String},
+      description: {type: String},
+    }]
   },
   {
     timestamps: true,
@@ -113,8 +138,8 @@ var Genre = mongoose.model('Genre', genreSchema);
 var Input = mongoose.model('Input', inputSchema);
 var License = mongoose.model('License', licenseSchema);
 var Media = mongoose.model('Media', mediaSchema);
+var Publication = mongoose.model('Publication', publicationSchema);
 var Software = mongoose.model('Software', softwareSchema);
-var SoftwareRelease = mongoose.model('SoftwareRelease', softwareReleaseSchema);
 
 module.exports = {
   Company: Company,
@@ -123,6 +148,6 @@ module.exports = {
   Input: Input,
   License: License,
   Media: Media,
+  Publication: Publication,
   Software: Software,
-  SoftwareRelease: SoftwareRelease,
 }

@@ -67,7 +67,10 @@ exports.findAll = (req, res) => {
                 result = {
                     companys: genres,
                     current: page,
-                    pages: Math.ceil(count / perPage)
+                    pages: Math.ceil(count / perPage),
+                    count: genres.length,
+                    total: count
+                    
                 };
                 console.log("SENDING RESULT-->" + result);
                 res.send(result);

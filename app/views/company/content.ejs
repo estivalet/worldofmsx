@@ -101,28 +101,18 @@
                                             </tbody>
                                         </table>
                                     </div> 
-                                    <ul class="pagination text-center" id="pagination">
-                                    </ul>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="col-md-12">
-                                    <table id="example" class="display" style="width:100%">
-                                        <thead>
-                                            <tr>
-                                                <th>name</th>
-                                            </tr>
-                                        </thead>
-                                        <tfoot>
-                                            <tr>
-                                                <th>name</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>                                    
+                                <div class="col-md-6">
+                                    <ul class="pagination text-center" id="pagination"></ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul style="margin:20px 0;text-align:right" id="totals"></ul>
                                 </div>
                             </div>
-        
+
                         </div>
       
                         <div class="box-footer">
@@ -228,7 +218,7 @@ function changePage(target, page) {
             span.innerHTML = element.name;
             td.appendChild(span);
             tr.appendChild(td);
-console.log(element.name);
+
             // Actions column.
             var td = document.createElement('TD');
             var span = document.createElement('SPAN');
@@ -295,24 +285,27 @@ console.log(element.name);
           }
           li.appendChild(a);
           pagination.appendChild(li);
+
+          var totals = document.getElementById("totals");
+          totals.innerHTML = "Showing " + ((data.current * 10) - 9) + " to " + ((data.current * 10) - 10 + data.count) + " of " + data.total + " entries";
+          
       }
+      
     });
 }
 
 
 $( document ).ready(function() {
     changePage("company", 1);
-
-    $(document).ready(function() {
-        $('#example').DataTable( {
-            "processing": true,
-            "serverSide": true,
-            "ajax": {
-                "url": "/company2",
-                "type" : "get",
-            }
-        });
-    });    
+/*
+    $('#example').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "/company2",
+            "type" : "get",
+        }
+    });*/
 });
 
 </script>
